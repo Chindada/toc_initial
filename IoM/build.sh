@@ -46,39 +46,39 @@ docker build --rm -f "../Dockerfile/C5System" \
              --build-arg COMMITID=$c5systemid \
              -t iomc5system:R5012 .
 
-rm -rf ../Images
-mkdir ../Images
+# rm -rf ../Images
+# mkdir ../Images
 
-docker save --output ../Images/ioms5system_image.tar ioms5system:R5012
-docker save --output ../Images/ioms5data_image.tar ioms5data:R5012
-docker save --output ../Images/ioms5edge_image.tar ioms5edge:R5012
-docker save --output ../Images/iomc5system_image.tar iomc5system:R5012
-docker system prune --volumes -f
+# docker save --output ../Images/ioms5system_image.tar ioms5system:R5012
+# docker save --output ../Images/ioms5data_image.tar ioms5data:R5012
+# docker save --output ../Images/ioms5edge_image.tar ioms5edge:R5012
+# docker save --output ../Images/iomc5system_image.tar iomc5system:R5012
+# docker system prune --volumes -f
 
-cd ../Images
-now=$(date +"%y%m%d%H%M")
-echo $now >> ./$now.txt
+# cd ../Images
+# now=$(date +"%y%m%d%H%M")
+# echo $now >> ./$now.txt
 
-HOST='192.168.10.20'
-USER='admin'
-PASSWD='Minnotec2025'
+# HOST='192.168.10.20'
+# USER='admin'
+# PASSWD='Minnotec2025'
 
-ftp -i -n -v $HOST << END_FTP
-quote USER $USER
-quote PASS $PASSWD
-passive
-binary
-cd "Public/IoM RC"
-mkdir $IOMVERSION
-cd $IOMVERSION
-mkdir Docker_images
-cd Docker_images
-delete ioms5system_image.tar
-delete ioms5data_image.tar
-delete ioms5edge_image.tar
-delete iomc5system_image.tar
-mput *.tar
-put $now.txt
-quit
-END_FTP
+# ftp -i -n -v $HOST << END_FTP
+# quote USER $USER
+# quote PASS $PASSWD
+# passive
+# binary
+# cd "Public/IoM RC"
+# mkdir $IOMVERSION
+# cd $IOMVERSION
+# mkdir Docker_images
+# cd Docker_images
+# delete ioms5system_image.tar
+# delete ioms5data_image.tar
+# delete ioms5edge_image.tar
+# delete iomc5system_image.tar
+# mput *.tar
+# put $now.txt
+# quit
+# END_FTP
 
