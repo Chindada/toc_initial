@@ -13,7 +13,7 @@ cd /
 rm -rf toc
 mkdir toc
 cd toc
-git clone http://toc:\!A2rgilaal@172.20.10.50:3000/toc/toc_initial.git
+git clone http://github.com/Chindada/toc_initial.git
 cd toc_initial
 chmod 777 chmod.sh
 ./chmod.sh
