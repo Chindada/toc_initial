@@ -30,5 +30,5 @@ docker run --name ftp \
     -e PASV_ADDRESS="172.20.10.14" \
     -d fauria/vsftpd
 
-echo "0 2 * * * root /toc/toc_initial/Tasks/daily_backup.sh" >> /etc/crontab
+# echo "0 2 * * * root /toc/toc_initial/Tasks/daily_backup.sh" >> /etc/crontab
 
