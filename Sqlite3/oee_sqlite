@@ -1,0 +1,8 @@
+
+cd /var/lib/docker/volumes/s5system-vol/_data
+sqlite3
+.open srv.db
+update sys_setting set value="1" where key="edition";
+select * from sys_setting;
+.quit
+docker container restart s5system

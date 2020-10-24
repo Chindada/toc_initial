@@ -1,0 +1,15 @@
+[Unit]
+Description=IoMShutdownAgent
+After=network.target
+StartLimitIntervalSec=5
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=root
+WorkingDirectory=/toc/toc_initial/Tasks
+ExecStart=/toc/toc_initial/Tasks/IoMShutdownAgent
+
+[Install]
+WantedBy=multi-user.target

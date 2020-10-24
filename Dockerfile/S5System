@@ -1,0 +1,26 @@
+FROM golang:1.13.15
+
+USER root
+ARG COMMITID
+
+ENV symbol=\!
+ENV GO111MODULE=on
+ENV TZ=Asia/Taipei
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+WORKDIR /go/src/app
+RUN git clone http://tim:${symbol}Minnotec2025@192.168.10.8/R5012/IoMS5System.git
+WORKDIR IoMS5System
+
+RUN apt-get update && apt-get upgrade -y && apt-get autoremove
+RUN apt-get install fonts-wqy-zenhei -y && fc-cache -v
+RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && apt install ./google-chrome-stable_current_amd64.deb -y
+
+RUN git checkout ${COMMITID}
+RUN git rev-list --format=%B --max-count=1 ${COMMITID} >> version.txt
+RUN date +"%Y/%m/%d-%T" >> version.txt
+RUN go build -o s5system
+
+ENTRYPOINT ./s5system
+
+EXPOSE 8887
