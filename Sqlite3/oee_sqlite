@@ -3,6 +3,18 @@ cd /var/lib/docker/volumes/s5system-vol/_data
 sqlite3
 .open srv.db
 update sys_setting set value="1" where key="edition";
+update sys_setting set value="asdf0000" where key="db_pwd";
+update sys_setting set value="tocsql" where key="db_host";
 select * from sys_setting;
 .quit
+
+cd /var/lib/docker/volumes/s5sdata-vol/_data
+sqlite3
+.open srv.db
+update sys_setting set value="asdf0000" where key="db_pwd";
+update sys_setting set value="tocsql" where key="db_host";
+select * from sys_setting;
+.quit
+
+
 docker container restart s5system
