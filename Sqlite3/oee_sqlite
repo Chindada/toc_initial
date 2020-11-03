@@ -8,7 +8,7 @@ update sys_setting set value="tocsql" where key="db_host";
 select * from sys_setting;
 .quit
 
-cd /var/lib/docker/volumes/s5sdata-vol/_data
+cd /var/lib/docker/volumes/s5data-vol/_data
 sqlite3
 .open srv.db
 update sys_setting set value="asdf0000" where key="db_pwd";
