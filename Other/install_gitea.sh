@@ -35,6 +35,7 @@ docker run --name gitea \
     --network=tocvlan \
     --ip=172.20.10.50 \
     --restart always \
+    --link tocsql \
     -e APP_NAME="Gitea" \
     -e RUN_MODE="prod" \
     -e DOMAIN="172.20.10.50" \
@@ -44,7 +45,7 @@ docker run --name gitea \
     -e DISABLE_SSH="false" \
     -e HTTP_PORT=80 \
     -e DB_TYPE="mysql" \
-    -e DB_HOST="172.20.10.100:3306" \
+    -e DB_HOST="tocsql:3306" \
     -e DB_NAME="gitea" \
     -e DB_USER="root" \
     -e DB_PASSWD="asdf0000" \
