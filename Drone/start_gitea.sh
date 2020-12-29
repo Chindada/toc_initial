@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# sudo -u git ssh-keygen -t rsa -b 4096 -C "mao123123123"
+# sudo -u git ssh-keygen -t rsa -b 4096 -C "maochindada@gmail.com"
 # useradd -u 1500 -m git
 
 docker stop gitea
