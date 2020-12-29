@@ -3,12 +3,11 @@
 docker stop drone
 docker system prune --volumes -f
 
-docker volume create drone-vol
 docker run --name drone \
   --network=tocvlan \
   --link gitea \
   --ip=172.20.10.99 \
-  -v drone-vol:/data \
+  -v /var/lib/drone:/data \
   -e DRONE_GITEA_SERVER=http://172.20.10.50/ \
   -e DRONE_GITEA_CLIENT_ID=614223ea-564a-4ee8-b174-eb456c84453e \
   -e DRONE_GITEA_CLIENT_SECRET=iyQnme5ksGju5zxJhdDaYAXvmywt6pmpqcts9VjKVeE=\
