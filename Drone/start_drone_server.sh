@@ -13,5 +13,6 @@ docker run --name drone \
   -e DRONE_RPC_SECRET=f6b2b9931bdcc2dee834cbaf3d8aced2 \
   -e DRONE_SERVER_HOST=172.20.10.99 \
   -e DRONE_SERVER_PROTO=http \
+  -e DRONE_GIT_ALWAYS_AUTH=true \
   --detach=true \
   drone/drone:1
