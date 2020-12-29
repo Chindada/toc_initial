@@ -8,6 +8,7 @@ docker run --name=drone \
   --network=tocvlan \
   --link gitea \
   --ip=172.20.10.99 \
+  --dns 8.8.8.8 \
   -v drone-vol:/data \
   -e DRONE_GITEA_SERVER=http://172.20.10.50/ \
   -e DRONE_GITEA_CLIENT_ID=614223ea-564a-4ee8-b174-eb456c84453e \
