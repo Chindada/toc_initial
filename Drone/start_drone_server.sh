@@ -5,7 +5,7 @@ docker run --name=drone \
   --network=tocvlan \
   --ip=172.20.10.99 \
   --volume=drone-vol:/data \
-  --env-file ./.env \
+  --env-file .env \
   --env=DRONE_GITEA_SERVER={{DRONE_GITEA_SERVER}} \
   --env=DRONE_GITEA_CLIENT_ID={{DRONE_GITEA_CLIENT_ID}} \
   --env=DRONE_GITEA_CLIENT_SECRET={{DRONE_GITEA_CLIENT_SECRET}} \
