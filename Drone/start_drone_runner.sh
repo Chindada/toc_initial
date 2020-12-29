@@ -14,5 +14,5 @@ docker run -d --name runner \
   -e DRONE_RPC_HOST=chintoc.asuscomm.com:9000 \
   -e DRONE_RPC_SECRET=f6b2b9931bdcc2dee834cbaf3d8aced2 \
   -e DRONE_RUNNER_CAPACITY=2 \
-  -e DRONE_RUNNER_NAME=drone.runner.01 \
+  -e DRONE_RUNNER_NAME=runner \
   drone/drone-runner-docker:1
