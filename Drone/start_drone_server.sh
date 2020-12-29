@@ -4,7 +4,7 @@ docker stop drone
 docker system prune --volumes -f
 
 docker volume create drone-vol
-docker run --name=drone \
+docker run --name drone \
   --network=tocvlan \
   --link gitea \
   --ip=172.20.10.99 \
