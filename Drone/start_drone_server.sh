@@ -1,5 +1,8 @@
 #!/bin/bash
 
+docker stop drone
+docker system prune --volumes -f
+
 docker volume create drone-vol
 docker run --name=drone \
   --network=tocvlan \
