@@ -14,7 +14,7 @@ docker system prune --volumes -f
 
 cd ../Images
 
-HOST='192.168.10.20'
+HOST='172.20.10.20'
 USER='admin'
 PASSWD='Minnotec2025'
 

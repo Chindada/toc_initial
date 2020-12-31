@@ -59,7 +59,7 @@ docker build --rm -f "../Dockerfile/C5System" \
 # now=$(date +"%y%m%d%H%M")
 # echo $now >> ./$now.txt
 
-# HOST='192.168.10.20'
+# HOST='172.20.10.20'
 # USER='admin'
 # PASSWD='Minnotec2025'
 

@@ -9,7 +9,7 @@ ENV symbol=\!
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 WORKDIR /app
-RUN git clone http://tim:${symbol}Minnotec2025@192.168.10.8/R5012/IoMC5System.git
+RUN git clone http://tim:${symbol}Minnotec2025@mit7f.ddns.me:9700/R5012/IoMC5System.git
 WORKDIR IoMC5System
 
 RUN git checkout ${COMMITID}

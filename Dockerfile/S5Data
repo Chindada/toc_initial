@@ -11,7 +11,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 WORKDIR /go/src/app
 
 RUN apt-get update && apt-get upgrade -y && apt-get autoremove
-RUN git clone http://tim:${symbol}Minnotec2025@192.168.10.8/R5012/IoMS5Data.git
+RUN git clone http://tim:${symbol}Minnotec2025@mit7f.ddns.me:9700/R5012/IoMS5Data.git
 WORKDIR IoMS5Data
 
 RUN git checkout ${COMMITID}

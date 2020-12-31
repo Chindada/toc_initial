@@ -12,7 +12,7 @@ WORKDIR /go/src/app
 
 RUN apt-get update && apt-get upgrade -y && apt-get autoremove
 RUN apt install net-tools -y
-RUN git clone http://tim:${symbol}Minnotec2025@192.168.10.8/R5012/IoMS5Edge.git
+RUN git clone http://tim:${symbol}Minnotec2025@mit7f.ddns.me:9700/R5012/IoMS5Edge.git
 WORKDIR IoMS5Edge
 
 RUN git checkout ${COMMITID}

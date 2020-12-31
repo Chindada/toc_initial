@@ -9,7 +9,7 @@ ENV TZ=Asia/Taipei
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 WORKDIR /go/src/app
-RUN git clone http://tim:${symbol}Minnotec2025@192.168.10.8/R5012/IoMS5System.git
+RUN git clone http://tim:${symbol}Minnotec2025@mit7f.ddns.me:9700/R5012/IoMS5System.git
 WORKDIR IoMS5System
 
 RUN apt-get update && apt-get upgrade -y && apt-get autoremove
