@@ -8,4 +8,5 @@ docker run -d \
   --ip=172.20.10.70 \
   --restart always \
   --name registry \
+  -e REGISTRY_HTTP_HEADERS_Access-Control-Allow-Origin="*" \
   registry:2
