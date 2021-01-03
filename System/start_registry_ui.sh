@@ -10,5 +10,4 @@ docker run -d \
   --name registry_ui \
   --link registry \
   -e DELETE_IMAGES=true \
-  -e REGISTRY_TITLE="ToC Registry" \
   joxit/docker-registry-ui:latest
