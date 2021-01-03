@@ -10,5 +10,5 @@ docker run -d \
   --name registry_ui \
   --link registry \
   -e DELETE_IMAGES=true \
-  -e NGINX_PROXY_HEADER_Access-Control-Allow-Origin= "*" \
+  -e REGISTRY_URL= "http://registry:5000" \
   joxit/docker-registry-ui:latest
