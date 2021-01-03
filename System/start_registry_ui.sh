@@ -9,7 +9,7 @@ docker run -d \
   --restart always \
   --name registry_ui \
   --link registry \
-  -e REGISTRY_URL="http://registry:5000" \
+  -e REGISTRY_URL="http://172.20.10.70:5000" \
   -e DELETE_IMAGES=true \
   -e REGISTRY_TITLE="ToC Registry" \
   joxit/docker-registry-ui:latest
