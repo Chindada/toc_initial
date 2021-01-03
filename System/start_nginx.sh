@@ -1,8 +1,7 @@
 #!/bin/bash
 
-docker stop registry_ui
+docker stop nginx
 docker system prune --volumes -f
-
 
 docker run --name nginx -d \
   --network tocvlan \
