@@ -10,4 +10,4 @@ docker run -d \
   --name registry-ui \
   -e DELETE_IMAGES=true \
   -e REGISTRY_URL="http://172.20.10.70:5000" \
-  joxit/docker-registry-ui:latest
+  joxit/docker-registry-ui:static
