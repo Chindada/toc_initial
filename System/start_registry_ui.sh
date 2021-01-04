@@ -11,5 +11,5 @@ docker run -d \
   --link registry \
   -e DELETE_IMAGES=true \
   -e REGISTRY_URL=http://registry:5000 \
-  -e REGISTRY_TITLE=ToC Docker Registry \
+  -e REGISTRY_TITLE="ToC Docker Registry" \
   joxit/docker-registry-ui:static
