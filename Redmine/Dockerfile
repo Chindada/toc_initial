@@ -1,4 +1,4 @@
-FROM Redmine
+FROM redmine
 
 RUN apt install -y git
 
