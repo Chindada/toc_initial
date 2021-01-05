@@ -1,4 +1,4 @@
-# EG 2.0 Initial
+# ToC Initial
 
 ## Getting Started
 
