@@ -1,6 +1,7 @@
 DROP DATABASE redmine;
 CREATE DATABASE redmine CHARACTER SET utf8 COLLATE utf8_general_ci;
-
+DROP DATABASE gitea;
+CREATE DATABASE gitea CHARACTER SET utf8 COLLATE utf8_general_ci;
 docker volume create redmine-vol
 docker run -d --name redmine \
 	--network=aiomlan \
@@ -23,9 +24,9 @@ docker run -d --name redmine \
 	redmine_aiom   //此映像檔已建立敏捷插件
 	
 補充SMTP設定失敗的重建方式
-1. 進入redmine container 路徑 /usr/src/redmine/config 找到檔案 configuration.yml.example
-2. 複製configuration.yml.example成立configuration.yml // cp + 複製檔  + 建立檔
-3. 使用vim / nano 編輯configuration.yml 找到Gmail段落設定好變數 再刪除前段 # 註解符號
+1. 進入 redmine container 路徑 /usr/src/redmine/config 找到檔案 configuration.yml.example
+2. 複製 configuration.yml.example 成立 configuration.yml // cp + 複製檔  + 建立檔
+3. 使用 vim / nano 編輯configuration.yml 找到Gmail段落設定好變數 再刪除前段 # 註解符號
 4. 重啟Redmine 使用管理者帳號寄出測試信件 
 5. 有收到信就是成功	
 
@@ -62,7 +63,7 @@ docker run -d --name openkm \
 	--dns=8.8.8.8 --restart always \
 	-v openkm-vol:/opt/openkm/repository \
 	-e TZ="Asia/Taipei" \
-	openkm/openkm-ce 
+	openkm/openkm-ce
 
 docker run -d --name openkm \
 	--network=aiomlan \
