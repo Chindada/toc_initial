@@ -1,44 +1,11 @@
-/*200926 紀錄 Docker 安裝*/
-sudo apt-get update
-sudo apt-get install apt-transport-https ca-certificates curl software-properties-common
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add –
-sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu  $(lsb_release -cs)  stable" 
-sudo apt-get update
-sudo apt-get install docker-ce
-apt-cache madison docker-ce
-sudo apt-get install docker-ce=<VERSION>
-sudo dpkg -i /path/to/package.deb
+mysqldump -u aiom -pMinnotec2025 -h mit7f.ddns.me -P 8881 redmine > redmine.sql
 
-/*
-Step 1: Update Local Database
-Step 2: Download Dependencies
-Step 3: Add Docker’s GPG Key
-Step 4: Install the Docker Repository
-Step 5: Update Repositories
-Step 6: Install Latest Version of Docker
-Step 7 (Optional): Install Specific Version of Docker 
-Step 8 (Optional): Install from a .deb Package
-/*--------------------*/
-/*....................	
-注意事項
--v   本機資料夾:容器儲存資料夾
---link aiomdb //同網域連接容器語法
-QNAP SQL Server:   /mnt/ext/opt/mariadb/bin/mysql -u root -pMinnotec2025  //根目錄下操作
-docker volume 查詢方法 docker inspect 
-/*....................*/
-{
-建立自定義網路設定
-docker network create -d macvlan \
-  --subnet=192.168.10.0/24 \
-  --gateway=192.168.10.1 \
-  -o parent=eth0 \
-  aiomlan
-}  
-//---------------------------Redmine docker
-{
-先創建Volume
+mysql -u root -pasdf0000 -h 172.20.10.10 -P 3306 redmine < redmine.sql
+
+DROP DATABASE redmine;
+CREATE DATABASE redmine CHARACTER SET utf8 COLLATE utf8_general_ci;
+
 docker volume create redmine-vol
-再創建Redmine
 docker run -d --name redmine \
     --network=aiomlan \
     --ip=192.168.10.9 \
@@ -59,20 +26,15 @@ docker run -d --name redmine \
     -e SMTP_PASSWORD=Mit82589155 \
     redmine_aiom   //此映像檔已建立敏捷插件
 	
-	/*補充SMTP設定失敗的重建方式*/
-	//1. 進入redmine container 路徑 /usr/src/redmine/config 找到檔案 configuration.yml.example
-	//2. 複製configuration.yml.example成立configuration.yml // cp + 複製檔  + 建立檔
-	//3. 使用vim / nano 編輯configuration.yml 找到Gmail段落設定好變數 再刪除前段 # 註解符號
-	//4. 重啟Redmine 使用管理者帳號寄出測試信件 
-	//5. 有收到信就是成功	
-	
+/*補充SMTP設定失敗的重建方式*/
+//1. 進入redmine container 路徑 /usr/src/redmine/config 找到檔案 configuration.yml.example
+//2. 複製configuration.yml.example成立configuration.yml // cp + 複製檔  + 建立檔
+//3. 使用vim / nano 編輯configuration.yml 找到Gmail段落設定好變數 再刪除前段 # 註解符號
+//4. 重啟Redmine 使用管理者帳號寄出測試信件 
+//5. 有收到信就是成功	
 //redmine data on nas:/share/CACHEDEV1_DATA/Container/container-station-data/lib/docker/volumes/redmine-vol/_data	
-}
-//---------------------------gitea docker
-{
-先創建Volume
+
 docker volume create gitea-vol
-再創建Gitea
 docker run -d --name gitea \
     --network=aiomlan \
     --ip=192.168.10.8 \
@@ -86,8 +48,7 @@ docker run -d --name gitea \
     -e HTTP_PORT=80 \
     gitea/gitea:1.11.5
 //gitea data on nas:/share/CACHEDEV1_DATA/Container/container-station-data/lib/docker/volumes/gitea-vol/_data	
-//其他設定
-/*
+
 資料庫設定
 MySQL
 192.168.10.20:3306
@@ -95,17 +56,8 @@ aiom
 Minnotec2025
 gitea
 utf8
-一般設定
-網站標題:AIoM Gitea
-SSH網域名稱localhost
-URL: http://192.168.10.8/
-*/
-}
-//---------------------------openkm
-{
-先創建Volume
+
 docker volume create openkm-vol
-再創建OpenKM
 docker run -d --name openkm \
 	--network=aiomlan \
 	--ip=192.168.10.7 \
@@ -124,7 +76,7 @@ docker run -d --name openkm \
 	-e TZ="Asia/Taipei" \
 	openkm_aiom	
 //openkm data on nas:/share/CACHEDEV1_DATA/Container/container-station-data/lib/docker/volumes/openkm-vol/_data
-}	
+
 //繁體中文安裝包:https://www.openkm.com/wiki/images/7/79/OpenKM_6_zh-TW.sql	
 /*------------------以下是實驗性語法.需驗證再使用----------------------*/	
 {
