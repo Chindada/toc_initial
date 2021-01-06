@@ -1,7 +1,3 @@
-mysqldump -u aiom -pMinnotec2025 -h mit7f.ddns.me -P 8881 redmine > redmine.sql
-
-mysql -u root -pasdf0000 -h 172.20.10.10 -P 3306 redmine < redmine.sql
-
 DROP DATABASE redmine;
 CREATE DATABASE redmine CHARACTER SET utf8 COLLATE utf8_general_ci;
 
