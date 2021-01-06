@@ -8,7 +8,7 @@ docker run -d --name redmine \
     --ip=172.20.10.210 \
     --restart always \
     --link tocsql \
-    -v redmine-vol:/usr/src/redmine/files \
+    -v /home/toc/redmine_files:/usr/src/redmine/files \
 	-e TZ="Asia/Taipei" \
     -e REDMINE_DB_MYSQL=tocsql \
     -e REDMINE_DB_USERNAME=root \
