@@ -9,4 +9,5 @@ RUN apt update \
     && apt -y install git
 RUN git clone https://github.com/makotokw/redmine-theme-gitmike.git /public/themes/gitmike
 RUN git clone https://gitlab.com/bdemirkir/sidebar_hide.git /plugins/sidebar_hide
+WORKDIR /plugins/redmine_agile-1_5_4-light
 RUN bundle install --without development test --no-deployment
