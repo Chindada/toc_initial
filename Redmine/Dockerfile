@@ -5,5 +5,5 @@ RUN git clone https://github.com/makotokw/redmine-theme-gitmike.git public/theme
 RUN git clone https://gitlab.com/bdemirkir/sidebar_hide.git plugins/sidebar_hide
 
 COPY redmine_agile /plugins/redmine_agile
-RUN gem install bundler --no-ri --no-rdoc
+RUN gem install bundler
 RUN bundle exec rake redmine:plugins NAME=redmine_agile RAILS_ENV=production
