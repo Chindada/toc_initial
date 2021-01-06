@@ -1,4 +1,4 @@
-FROM redmine
+FROM bitnami/redmine
 RUN pwd
 COPY redmine_agile-1_5_4-light.zip plugins/redmine_agile-1_5_4-light.zip
 WORKDIR /usr/src/redmine/plugins
