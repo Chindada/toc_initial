@@ -1,6 +1,5 @@
-FROM bitnami/redmine
+FROM redmine
 RUN pwd
-WORKDIR /usr/src/redmine
 COPY redmine_agile-1_5_4-light.zip plugins/redmine_agile-1_5_4-light.zip
 WORKDIR /usr/src/redmine/plugins
 RUN apt update \
