@@ -20,14 +20,14 @@ chmod 777 chmod.sh
 ```
 ## IP Table
 
-- 172.20.10.10: MariaDB - 3306
-- 172.20.10.50: Gitea - 80
-- 172.20.10.70: Docker Registry - 5000
-- 172.20.10.71: Docker Registry UI - 80
-- 172.20.10.98: Drone Runner - 80
-- 172.20.10.99: Drone Server - 80
-- 172.20.10.210: Redmine
-- 172.20.10.220: Nginx - 80
+- 192.168.10.10: MariaDB - 3306
+- 192.168.10.50: Gitea - 80
+- 192.168.10.70: Docker Registry - 5000
+- 192.168.10.71: Docker Registry UI - 80
+- 192.168.10.98: Drone Runner - 80
+- 192.168.10.99: Drone Server - 80
+- 192.168.10.210: Redmine
+- 192.168.10.220: Nginx - 80
 
 ## Deployment
 

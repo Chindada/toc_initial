@@ -3,6 +3,7 @@ RUN pwd
 
 COPY redmine_agile-1_5_4-light.zip plugins/redmine_agile-1_5_4-light.zip
 COPY redmine_checklists-3_1_18-light.zip plugins/redmine_checklists-3_1_18-light.zip
+COPY configuration.yml config/configuration.yml
 
 WORKDIR /usr/src/redmine/plugins
 RUN apt update \
