@@ -9,7 +9,7 @@ docker run -d --name redmine \
     --restart always \
     --link tocsql \
     -v /home/toc/redmine_files:/usr/src/redmine/files \
-	-e TZ="Asia/Taipei" \
+    -e TZ="Asia/Taipei" \
     -e REDMINE_DB_MYSQL=tocsql \
     -e REDMINE_DB_USERNAME=root \
     -e REDMINE_DB_PASSWORD=asdf0000 \
