@@ -18,6 +18,6 @@ CREATE DATABASE gitea CHARACTER SET utf8 COLLATE utf8_general_ci;' >> tmp.sql
 mysql -u $dbUser -p$dbPass -h $dbHost -P $dbPort --force < tmp.sql
 rm tmp.sql
 echo "Import gitea"
-mysqldump -u $dbUser -p$dbPass -h $dbHost -P $dbPort gitea < gitea.sql
+mysql -u $dbUser -p$dbPass -h $dbHost -P $dbPort gitea < gitea.sql
 echo "Import redmine"
-mysqldump -u $dbUser -p$dbPass -h $dbHost -P $dbPort redmine < redmine.sql
+mysql -u $dbUser -p$dbPass -h $dbHost -P $dbPort redmine < redmine.sql
