@@ -11,6 +11,7 @@ docker run -d --name redmine \
     -v /home/toc/redmine_files:/usr/src/redmine/files \
     -e TZ="Asia/Taipei" \
     -e REDMINE_DB_MYSQL=tocsql \
+    -e REDMINE_DB_ENCODING=utf8 \
     -e REDMINE_DB_USERNAME=root \
     -e REDMINE_DB_PASSWORD=asdf0000 \
     -e REDMINE_DB_NAME=redmine \

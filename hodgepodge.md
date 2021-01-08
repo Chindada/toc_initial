@@ -1,7 +1,5 @@
-DROP DATABASE redmine;
-CREATE DATABASE redmine CHARACTER SET utf8 COLLATE utf8_general_ci;
-DROP DATABASE gitea;
-CREATE DATABASE gitea CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+
 docker volume create redmine-vol
 docker run -d --name redmine \
 	--network=aiomlan \
