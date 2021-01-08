@@ -6,6 +6,7 @@ dbPass=asdf0000
 dbPort=3306
 
 cd
+mkdir minnotec
 cd minnotec
 rm gitea.sql redmine.sql
 mysqldump -u $dbUser -p$dbPass -h $dbHost -P $dbPort gitea > gitea.sql
