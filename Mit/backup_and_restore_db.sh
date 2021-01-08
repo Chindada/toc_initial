@@ -5,7 +5,7 @@ dbUser=root
 dbPass=asdf0000
 dbPort=3306
 
-cd
+cd /home/toc
 mkdir minnotec
 cd minnotec
 rm gitea.sql redmine.sql
