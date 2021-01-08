@@ -3,7 +3,7 @@
 dbHost=172.20.10.10
 dbUser=root
 dbPass=asdf0000
-dbPort=$dbPort
+dbPort=3306
 
 cd
 cd minnotec
