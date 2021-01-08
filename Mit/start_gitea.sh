@@ -31,6 +31,7 @@ chown -R admin:administrators gitea_data
 docker run --name gitea \
     --network=dockervlan \
     --ip=192.168.10.8 \
+    --dns=8.8.8.8 \
     --restart always \
     --link mariadb \
     -e APP_NAME="Minnotec Gitea" \
