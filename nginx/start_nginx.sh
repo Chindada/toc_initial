@@ -8,5 +8,5 @@ docker run --name nginx -d \
   --ip=172.20.10.220 \
   --restart always \
   --link gitea \
-  -v ./nginx.conf:/etc/nginx/nginx.conf:ro \
+  -v $pwd/nginx.conf:/etc/nginx/nginx.conf:ro \
   nginx
