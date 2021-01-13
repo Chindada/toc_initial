@@ -17,6 +17,9 @@ git clone http://github.com/Chindada/toc_initial.git
 cd toc_initial
 chmod 777 chmod.sh
 ./chmod.sh
+
+docker rmi $(docker images -a -q)
+docker system prune --volumes -f
 ```
 ## IP Table
 
