@@ -20,7 +20,7 @@ docker run --name gitea \
   -e SSH_LISTEN_PORT=22 \
   -e SSH_PORT=22 \
   -e DISABLE_SSH="false" \
-  -e HTTP_PORT=80 \
+  -e HTTP_PORT=3000 \
   -e DB_TYPE="mysql" \
   -e DB_HOST="tocsql:3306" \
   -e DB_NAME="gitea" \
