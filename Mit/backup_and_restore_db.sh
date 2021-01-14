@@ -1,8 +1,8 @@
 #!/bin/bash
 
-dbHost=172.20.10.10
+dbHost=192.168.10.240
 dbUser=root
-dbPass=asdf0000
+dbPass=Minnotec2025
 dbPort=3306
 
 cd /home/toc

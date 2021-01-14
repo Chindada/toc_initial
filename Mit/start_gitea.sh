@@ -6,14 +6,14 @@ rm -rf /share/Docker_data/gitea_data/gitea
 rm -rf /share/Docker_data/gitea_data/ssh
 docker run --name gitea \
     --network=dockervlan \
-    --ip=192.168.10.3 \
+    --ip=192.168.10.239 \
     --dns=8.8.8.8 \
     --restart always \
     --link mariadb \
     -e APP_NAME="Minnotec RD Gitea" \
     -e RUN_MODE="prod" \
     -e DOMAIN="192.168.10.8" \
-    -e SSH_DOMAIN="192.168.10.3" \
+    -e SSH_DOMAIN="192.168.10.239" \
     -e SSH_LISTEN_PORT=22 \
     -e SSH_PORT=22 \
     -e DISABLE_SSH="false" \

@@ -20,6 +20,7 @@ chmod 777 chmod.sh
 
 docker rmi $(docker images -a -q)
 docker system prune --volumes -f
+docker restart $(docker ps -q)
 ```
 ## IP Table
 
