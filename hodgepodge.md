@@ -19,7 +19,7 @@ docker run -d --name redmine \
 	-e SMTP_PORT=587 \
 	-e SMTP_USER=minnotec.aiom@gmail.com \
 	-e SMTP_PASSWORD=Mit82589155 \
-	redmine_aiom   //此映像檔已建立敏捷插件
+	redmine_aiom   //此映像檔已建立敏捷插
 	
 補充SMTP設定失敗的重建方式
 1. 進入 redmine container 路徑 /usr/src/redmine/config 找到檔案 configuration.yml.example
