@@ -1,4 +1,7 @@
-
+smtp.gmail.com:587
+minnotec.aiom@gmail.com
+Mit82589155
+Minnotec2025
 
 docker volume create redmine-vol
 docker run -d --name redmine \

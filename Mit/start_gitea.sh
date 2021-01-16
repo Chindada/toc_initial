@@ -32,13 +32,15 @@ docker run --name gitea \
     -d gitea/gitea:1.12.5
 
 rm /share/homes/git/.ssh/authorized_keys
-echo "$(cat /share/homes/git/.ssh/id_ed25519.pub)" >> /share/homes/git/.ssh/authorized_keys
-chown -R git:git /share/homes/git/.ssh
 
-rm -rf /app
-mkdir /app
-mkdir /app/gitea
-echo 'ssh -o StrictHostKeyChecking=no git@192.168.10.3 "SSH_ORIGINAL_COMMAND=\"$SSH_ORIGINAL_COMMAND\" $0 $@"' >> /app/gitea/gitea
-chmod +x /app/gitea/gitea
-chown -R git:git /app
+
+# echo "$(cat /share/homes/git/.ssh/id_ed25519.pub)" >> /share/homes/git/.ssh/authorized_keys
+# chown -R git:git /share/homes/git/.ssh
+
+# rm -rf /app
+# mkdir /app
+# mkdir /app/gitea
+# echo 'ssh -o StrictHostKeyChecking=no git@192.168.10.239 "SSH_ORIGINAL_COMMAND=\"$SSH_ORIGINAL_COMMAND\" $0 $@"' >> /app/gitea/gitea
+# chmod +x /app/gitea/gitea
+# chown -R git:git /app
 
