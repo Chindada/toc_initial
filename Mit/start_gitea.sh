@@ -2,8 +2,10 @@
 
 docker stop gitea
 docker system prune --volumes -f
+
 rm -rf /share/Docker_data/gitea_data/gitea
 rm -rf /share/Docker_data/gitea_data/ssh
+
 docker run --name gitea \
     --network=dockervlan \
     --ip=192.168.10.239 \
