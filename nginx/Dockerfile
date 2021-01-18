@@ -1,7 +1,7 @@
 # build stage
 FROM node:lts-alpine as build-stage
 WORKDIR /app
-COPY ./vue /app/vue
+COPY ./vue/ /app/vue/
 RUN npm install
 RUN npm run build
 
