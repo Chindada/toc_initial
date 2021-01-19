@@ -289,25 +289,6 @@
               @filtered="onFiltered"
             >
               <template v-slot:cell(numberserial)="row" class="col-sm-3">{{ row.index }}</template>
-              <!-- <template v-slot:cell(name)="row">{{ row.value }}</template> -->
-              <!--<template v-slot:cell(checkbox)="row">
-            <b-form-checkbox></b-form-checkbox>
-              </template>-->
-
-              <!-- <template v-slot:cell(actions)="row">
-                <b-button size="sm" @click="moldwindow(row.item, row.index, 'edit')">編輯</b-button>
-                <b-button size="sm" @click="row.toggleDetails"
-                  >{{ row.detailsShowing ? '隱藏' : '顯示' }} 詳細</b-button
-                >
-              </template>-->
-              <!--詳細資訊 -->
-              <!-- <template v-slot:row-details="row">
-                <b-card>
-                  <ul>
-                    <li v-for="(value, key) in row.item" :key="key">{{ key }}: {{ value }}</li>
-                  </ul>
-                </b-card>
-              </template>-->
             </b-table>
             <b-row>
               <b-col cols="8">
@@ -348,27 +329,13 @@
             </b-row>
             <!-- <div>圖</div> -->
 
-            <class-tab
+            <amchart-tab
               :searchData="data"
               :getchartdata="tabledata"
               :workshopselect="scearchworkshop"
               :tabvalue="tabvalue"
               v-on:callparent="getdata"
-            ></class-tab>
-
-            <!-- <b-row>
-          <b-col lg="2">
-            <mdb-select align="left" v-model="perPage" :options="optionitems" />
-          </b-col>
-          <b-col>
-            <b-pagination
-              v-model="currentPage"
-              :total-rows="totalRows"
-              :per-page="perPage"
-              align="right"
-            ></b-pagination>
-          </b-col>
-            </b-row>-->
+            ></amchart-tab>
             <hr />
           </div>
         </div>
@@ -461,78 +428,7 @@
       </form>
     </mdb-modal>
     <!-- 排程衝突 -->
-    <mdb-modal
-      v-if="scheduleConflict"
-      @close="scheduleConflict = false"
-      size="lg"
-      class="editmodal"
-    >
-      <form>
-        <mdb-modal-header>
-          <mdb-modal-title>{{ $t('schedule') }}</mdb-modal-title>
-        </mdb-modal-header>
-        <mdb-modal-body>
-          <b-table
-            responsive
-            bordered
-            :items="scheduleConflictArray"
-            :fields="scheduleConflictfields"
-          >
-            <template v-slot:cell(moldConflict)="row">
-              <template v-if="row.item.moldConflict.length > 0">
-                <div
-                  v-for="(item, index) in row.item.moldConflict"
-                  :key="index"
-                  class="tooltipConflictMain"
-                >
-                  {{ item.scheduleNumber }}
-                  <span style="display: inline-block">
-                    <div class="tooltipConflict">
-                      ?
-                      <div class="tooltipConflictText" style="text-align:left">
-                        <div>{{ $t('schedule_start_time') }} : {{ item.startTime }}</div>
-                        <div>{{ $t('schedule_end_time') }} : {{ item.endTime }}</div>
-                      </div>
-                    </div>
-                  </span>
-                </div>
-              </template>
-              <template v-else>
-                {{ '-' }}
-              </template>
-            </template>
-            <template v-slot:cell(machineConflict)="row">
-              <template v-if="row.item.machineConflict.length > 0">
-                <div
-                  v-for="(item, index) in row.item.machineConflict"
-                  :key="index"
-                  class="tooltipConflictMain"
-                >
-                  {{ item.scheduleNumber }}
-                  <span style="display: inline-block">
-                    <div class="tooltipConflict">
-                      ?
-                      <div class="tooltipConflictText" style="text-align:left">
-                        <div>{{ $t('schedule_start_time') }} : {{ item.startTime }}</div>
-                        <div>{{ $t('schedule_end_time') }} : {{ item.endTime }}</div>
-                      </div>
-                    </div>
-                  </span>
-                </div>
-              </template>
-              <template v-else>
-                {{ '-' }}
-              </template>
-            </template>
-          </b-table>
-        </mdb-modal-body>
-        <mdb-modal-footer>
-          <mdb-btn color="0000" @click.native="scheduleConflict = false" type="button">
-            {{ $t('close') }}
-          </mdb-btn>
-        </mdb-modal-footer>
-      </form>
-    </mdb-modal>
+    <error-tab :errorArray="errorArray"> </error-tab>
   </b-container>
 </template>
 
@@ -542,7 +438,8 @@ import { mapState } from 'vuex'
 import datePicker from 'vue-bootstrap-datetimepicker'
 import 'pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css'
 import 'bootstrap/dist/css/bootstrap.css'
-import Class from '@/components/produce/schedule/amchart'
+import amchartTab from '@/components/produce/schedule/amchart'
+import errorTableTab from '@/components/produce/schedule/scheduleConflictTable'
 import {
   // ScheduleTtimeAPI,
   // ScheduleOEEplusAPI,
@@ -564,7 +461,8 @@ export default {
   },
   components: {
     datePicker,
-    'class-tab': Class
+    'amchart-tab': amchartTab,
+    'error-tab': errorTableTab
   },
   data() {
     var selectoption = [
@@ -586,6 +484,7 @@ export default {
     }
 
     return {
+      errorArray: [], //錯誤array
       manufactureOrderNumbersshowflag: true,
       errormes: '', //錯誤訊息
       selectoption, //選擇狀態暫存
@@ -868,46 +767,6 @@ export default {
           class: 'text-center',
           thStyle: { whiteSpace: 'nowrap' }
         }
-      ],
-      //////////////////////////////////////////////////// 排程衝突
-      scheduleConflict: false,
-      scheduleConflictArray: [],
-      scheduleConflictfields: [
-        {
-          key: 'scheduleNumber',
-          label: this.$t('schedule_number'), //'排程編號',
-          sortable: true,
-          class: 'text-center',
-          thStyle: { whiteSpace: 'nowrap' }
-        },
-        {
-          key: 'moldNumber',
-          label: this.$t('mold_number'), //'模具編號',
-          sortable: true,
-          class: 'text-center',
-          thStyle: { whiteSpace: 'nowrap' }
-        },
-        {
-          key: 'machineNumber',
-          label: this.$t('machine_number'), //'設備編號',
-          sortable: true,
-          class: 'text-center',
-          thStyle: { whiteSpace: 'nowrap' }
-        },
-        {
-          key: 'moldConflict',
-          label: this.$t('mold_conflict'), //'模具衝突',
-          // sortable: true,
-          class: 'text-center',
-          thStyle: { whiteSpace: 'nowrap' }
-        },
-        {
-          key: 'machineConflict',
-          label: this.$t('machine_conflict'), //'設備衝突',
-          // sortable: true,
-          class: 'text-center',
-          thStyle: { whiteSpace: 'nowrap' }
-        }
       ]
     }
   },
@@ -929,21 +788,6 @@ export default {
     this.inienddate.setDate(new Date().getDate() - 180)
     this.iniright()
     this.getworkshop()
-    // var today = new Date()
-    // var today1 = new Date()
-    // today.setHours(0)
-    // today.setMinutes(0)
-    // this.data = {
-    //   workshop: 0,
-    //   scarchbtm: 0,
-    //   inputstarttime: today,
-    //   inputendtime: today1
-    // }
-    // this.data.inputendtime.setDate(new Date().getDate())
-    // this.data.inputstarttime.setDate(new Date().getDate() - 180)
-    // this.data.inputendtime.setDate(new Date().getDate() + 1)
-    // this.data.inputendtime.setHours(0)
-    // this.data.inputendtime.setMinutes(0)
   },
   mounted() {
     this.searchdata(3)
@@ -1381,94 +1225,15 @@ export default {
           },
           error => {
             this.isbusy = false
-            // if (error.response.data.response == 'End time is earlier than start time') {
-            //   this.errormes = this.$t('employed_holiday_time_error')
-            // } else {
-            //   this.errormes = error.response.data.response
+            this.errorArray = error.response.data.errorArray
 
-            // }
-            this.checkScheduleConflict(error.response.data.errorArray)
             console.log(error.response)
             // this.$layer.msg(this.$t('fail') + error.response.data.response)
           }
         )
-        // subitarray.schedule.push(JSON.parse(JSON.stringify(tempobject)))
-
-        // subitarray.delete = this.editdeletearray //f取得刪除值??
       }
     },
-    checkScheduleConflict(errorArray) {
-      this.scheduleConflictArray = []
-      errorArray.forEach(item => {
-        let checkIndex = this.scheduleConflictArray.findIndex(obj => {
-          return obj.scheduleNumber == item.scheduleNumber
-        })
-        if (checkIndex == -1) {
-          if (item.mode == 1) {
-            //模具衝突
-            this.scheduleConflictArray.push({
-              scheduleNumber: item.scheduleNumber,
-              moldNumber: item.moldNumber,
-              machineNumber: item.machineNumber,
-              moldConflict: [],
-              machineConflict: []
-            })
-            item.concliftSchedules.forEach(sub => {
-              this.scheduleConflictArray[this.scheduleConflictArray.length - 1].moldConflict.push({
-                scheduleNumber: sub.scheduleSerial,
-                startTime: this.timeStampToStringFunc(sub.startTime, 'yyyy-mm-dd hh:mm'),
-                endTime: this.timeStampToStringFunc(sub.endTime, 'yyyy-mm-dd hh:mm')
-              })
-            })
-          } else if (item.mode == 2) {
-            //設備衝突
 
-            this.scheduleConflictArray.push({
-              scheduleNumber: item.scheduleNumber,
-              moldNumber: item.moldNumber,
-              machineNumber: item.machineNumber,
-              moldConflict: [],
-              machineConflict: []
-            })
-            item.concliftSchedules.forEach(sub => {
-              this.scheduleConflictArray[
-                this.scheduleConflictArray.length - 1
-              ].machineConflict.push({
-                scheduleNumber: sub.scheduleSerial,
-                startTime: this.timeStampToStringFunc(sub.startTime, 'yyyy-mm-dd hh:mm'),
-                endTime: this.timeStampToStringFunc(sub.endTime, 'yyyy-mm-dd hh:mm')
-              })
-            })
-          }
-        } else {
-          if (item.mode == 1) {
-            //模具衝突
-            item.concliftSchedules.forEach(sub => {
-              this.scheduleConflictArray[checkIndex].moldConflict.push({
-                scheduleNumber: sub.scheduleSerial,
-                startTime: this.timeStampToStringFunc(sub.startTime, 'yyyy-mm-dd hh:mm'),
-                endTime: this.timeStampToStringFunc(sub.endTime, 'yyyy-mm-dd hh:mm')
-              })
-            })
-          } else if (item.mode == 2) {
-            //模具衝突
-            item.concliftSchedules.forEach(sub => {
-              this.scheduleConflictArray[checkIndex].machineConflict.push({
-                scheduleNumber: sub.scheduleSerial,
-                startTime: this.timeStampToStringFunc(sub.startTime, 'yyyy-mm-dd hh:mm'),
-                endTime: this.timeStampToStringFunc(sub.endTime, 'yyyy-mm-dd hh:mm')
-              })
-            })
-          }
-        }
-      })
-      this.scheduleConflictArray.forEach(item => {
-        item.moldConflict.sort((a, b) => naturalCompare(a.scheduleNumber, b.scheduleNumber))
-        item.machineConflict.sort((a, b) => naturalCompare(a.scheduleNumber, b.scheduleNumber))
-      })
-      this.scheduleConflictArray.sort((a, b) => naturalCompare(a.scheduleNumber, b.scheduleNumber))
-      this.scheduleConflict = true
-    },
     // 刪除
     deletemold() {
       this.isbusy = true
@@ -1517,6 +1282,9 @@ export default {
 </script>
 
 <style scoped>
+.errorModal > .table-responsive {
+  min-height: 300px;
+}
 .inputCenter {
   text-align: center !important;
 }

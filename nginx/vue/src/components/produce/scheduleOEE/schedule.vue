@@ -587,78 +587,7 @@
 
     <!--end OEE新增排程DB衝突 -->
     <!-- 排程衝突 -->
-    <mdb-modal
-      v-if="scheduleConflict"
-      @close="scheduleConflict = false"
-      size="lg"
-      class="editmodal"
-    >
-      <form>
-        <mdb-modal-header>
-          <mdb-modal-title>{{ $t('schedule') }}</mdb-modal-title>
-        </mdb-modal-header>
-        <mdb-modal-body>
-          <b-table
-            responsive
-            bordered
-            :items="scheduleConflictArray"
-            :fields="scheduleConflictfields"
-          >
-            <template v-slot:cell(moldConflict)="row">
-              <template v-if="row.item.moldConflict.length > 0">
-                <div
-                  v-for="(item, index) in row.item.moldConflict"
-                  :key="index"
-                  class="tooltipConflictMain"
-                >
-                  {{ item.scheduleNumber }}
-                  <span style="display: inline-block">
-                    <div class="tooltipConflict">
-                      ?
-                      <div class="tooltipConflictText" style="text-align:left">
-                        <div>{{ $t('schedule_start_time') }} : {{ item.startTime }}</div>
-                        <div>{{ $t('schedule_end_time') }} : {{ item.endTime }}</div>
-                      </div>
-                    </div>
-                  </span>
-                </div>
-              </template>
-              <template v-else>
-                {{ '-' }}
-              </template>
-            </template>
-            <template v-slot:cell(machineConflict)="row">
-              <template v-if="row.item.machineConflict.length > 0">
-                <div
-                  v-for="(item, index) in row.item.machineConflict"
-                  :key="index"
-                  class="tooltipConflictMain"
-                >
-                  {{ item.scheduleNumber }}
-                  <span style="display: inline-block">
-                    <div class="tooltipConflict">
-                      ?
-                      <div class="tooltipConflictText" style="text-align:left">
-                        <div>{{ $t('schedule_start_time') }} : {{ item.startTime }}</div>
-                        <div>{{ $t('schedule_end_time') }} : {{ item.endTime }}</div>
-                      </div>
-                    </div>
-                  </span>
-                </div>
-              </template>
-              <template v-else>
-                {{ '-' }}
-              </template>
-            </template>
-          </b-table>
-        </mdb-modal-body>
-        <mdb-modal-footer>
-          <mdb-btn color="0000" @click.native="scheduleConflict = false" type="button">
-            {{ $t('close') }}
-          </mdb-btn>
-        </mdb-modal-footer>
-      </form>
-    </mdb-modal>
+    <error-tab :errorArray="errorArray"> </error-tab>
   </b-container>
 </template>
 
@@ -669,15 +598,18 @@ import { ModelSelect } from 'vue-search-select'
 import 'pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css'
 import 'bootstrap/dist/css/bootstrap.css'
 import Class from '@/components/produce/scheduleOEE/amchart'
+import errorTableTab from '@/components/produce/schedule/scheduleConflictTable'
+
 import {
-  ScheduleOEEAPI,
+  // ScheduleOEEAPI,
   ScheduleChange,
   // ScheduleAPI,
   GetOEEScheduleSerialAPI,
   ScheduleOEEnewmultiAPI,
   ScheduleOEEallAPI,
   ScheduleMultiAPI,
-  ScheduleOEEplusMoldMachineAPI
+  ScheduleOEEplusMoldMachineAPI,
+  ScheduleOEEmultieditAPI
 } from '@/plugins/produceapis.js'
 // import { MoldAPI } from '@/plugins/basicapis.js'
 import {
@@ -689,7 +621,7 @@ import {
 export default {
   components: {
     'class-tab': Class,
-
+    'error-tab': errorTableTab,
     ModelSelect
   },
   data() {
@@ -728,6 +660,7 @@ export default {
     var newscheduleobjectnull = JSON.parse(JSON.stringify(newscheduleobject))
 
     return {
+      errorArray: [], //錯誤array
       page_first: 0, //第一條
       page_last: 0, //最後一筆
       page_total: 0, //總共筆數
@@ -1284,98 +1217,12 @@ export default {
             this.getdata()
           },
           error => {
-            // if (error.response.data.conflicts != null || error.response.data.conflicts != []) {
-            //   error.response.data.conflicts.forEach(item => {
-            //     this.insertnewscheduleobject[item].classtype = 'newerrortype'
-            //   })
-            // }
-            // if (error.response.data.response == 'Self conflicts') {
-            //   this.errormes = this.$t('to_schedule_error2') //設備或模具時間衝突
-            // } else if (error.response.data.response == 'These schedule have conflicts with DB') {
-            //   this.errormes = this.$t('to_schedule_error1') //與現有排程時間衝突
-            //   this.newscheduleOEEerror = true
-            //   this.newscheduletabledataOEEErrordata = error.response.data.errorArray
-            // } else {
-            //   this.errormes = error.response.data.response
-
-            // }
-            this.checkScheduleConflict(error.response.data.errorArray)
+            this.errorArray = error.response.data.errorArray
           }
         )
       }
     },
-    checkScheduleConflict(errorArray) {
-      this.scheduleConflictArray = []
-      errorArray.forEach(item => {
-        let checkIndex = this.scheduleConflictArray.findIndex(obj => {
-          return obj.scheduleNumber == item.scheduleNumber
-        })
-        if (checkIndex == -1) {
-          if (item.mode == 1) {
-            //模具衝突
-            this.scheduleConflictArray.push({
-              scheduleNumber: item.scheduleNumber,
-              moldNumber: item.moldNumber,
-              machineNumber: item.machineNumber,
-              moldConflict: [],
-              machineConflict: []
-            })
-            item.concliftSchedules.forEach(sub => {
-              this.scheduleConflictArray[this.scheduleConflictArray.length - 1].moldConflict.push({
-                scheduleNumber: sub.scheduleSerial,
-                startTime: this.timeStampToStringFunc(sub.startTime, 'yyyy-mm-dd hh:mm'),
-                endTime: this.timeStampToStringFunc(sub.endTime, 'yyyy-mm-dd hh:mm')
-              })
-            })
-          } else if (item.mode == 2) {
-            //設備衝突
 
-            this.scheduleConflictArray.push({
-              scheduleNumber: item.scheduleNumber,
-              moldNumber: item.moldNumber,
-              machineNumber: item.machineNumber,
-              moldConflict: [],
-              machineConflict: []
-            })
-            item.concliftSchedules.forEach(sub => {
-              this.scheduleConflictArray[
-                this.scheduleConflictArray.length - 1
-              ].machineConflict.push({
-                scheduleNumber: sub.scheduleSerial,
-                startTime: this.timeStampToStringFunc(sub.startTime, 'yyyy-mm-dd hh:mm'),
-                endTime: this.timeStampToStringFunc(sub.endTime, 'yyyy-mm-dd hh:mm')
-              })
-            })
-          }
-        } else {
-          if (item.mode == 1) {
-            //模具衝突
-            item.concliftSchedules.forEach(sub => {
-              this.scheduleConflictArray[checkIndex].moldConflict.push({
-                scheduleNumber: sub.scheduleSerial,
-                startTime: this.timeStampToStringFunc(sub.startTime, 'yyyy-mm-dd hh:mm'),
-                endTime: this.timeStampToStringFunc(sub.endTime, 'yyyy-mm-dd hh:mm')
-              })
-            })
-          } else if (item.mode == 2) {
-            //模具衝突
-            item.concliftSchedules.forEach(sub => {
-              this.scheduleConflictArray[checkIndex].machineConflict.push({
-                scheduleNumber: sub.scheduleSerial,
-                startTime: this.timeStampToStringFunc(sub.startTime, 'yyyy-mm-dd hh:mm'),
-                endTime: this.timeStampToStringFunc(sub.endTime, 'yyyy-mm-dd hh:mm')
-              })
-            })
-          }
-        }
-      })
-      this.scheduleConflictArray.forEach(item => {
-        item.moldConflict.sort((a, b) => naturalCompare(a.scheduleNumber, b.scheduleNumber))
-        item.machineConflict.sort((a, b) => naturalCompare(a.scheduleNumber, b.scheduleNumber))
-      })
-      this.scheduleConflictArray.sort((a, b) => naturalCompare(a.scheduleNumber, b.scheduleNumber))
-      this.scheduleConflict = true
-    },
     checktime(sttime, endtime) {
       if (endtime <= sttime) {
         return true
@@ -1632,45 +1479,40 @@ export default {
         editsubmitflag = false
       }
       if (editsubmitflag) {
-        this.putscheduleobject.moldCycleTime = parseFloat(this.putscheduleobject.moldCycleTime)
+        let temparray = []
+        temparray.push(JSON.parse(JSON.stringify(this.putscheduleobject)))
 
-        this.putscheduleobject.qty = parseInt(this.putscheduleobject.qty)
-        this.putscheduleobject.startTime = this.stringToTimestampFunc(
+        temparray[0].moldCycleTime = parseFloat(this.putscheduleobject.moldCycleTime)
+        temparray[0].qty = parseInt(this.putscheduleobject.qty)
+        temparray[0].startTime = this.stringToTimestampFunc(
           new Date(this.putscheduleobject.startTime)
         )
-        this.putscheduleobject.endTime = this.stringToTimestampFunc(
-          new Date(this.putscheduleobject.endTime)
-        )
+        temparray[0].endTime = this.stringToTimestampFunc(new Date(this.putscheduleobject.endTime))
         var moldarray = this.moldchange(this.putscheduleobject.moldId)
 
-        this.putscheduleobject.moldGreenRange = moldarray[1]
-        this.putscheduleobject.moldYellowRange = moldarray[2]
-        var access_token_val = this.$cookies.get('access_token')
-
-        ScheduleOEEAPI.put(JSON.stringify(this.putscheduleobject), {
-          headers: {
-            access_token: access_token_val
-          }
-        }).then(
-          () => {
-            this.$layer.msg(this.$t('scuccess'))
-            this.getdata()
-            this.modaledit = false
-          },
-          error => {
-            this.$layer.msg(this.$t('fail') + error.response.data.response)
-            this.putscheduleobject.startTime = this.timeStampToStringFunc(
-              this.putscheduleobject.startTime,
-              'yyyy-mm-ddThh:mm'
-            )
-            this.putscheduleobject.endTime = this.timeStampToStringFunc(
-              this.putscheduleobject.endTime,
-              'yyyy-mm-ddThh:mm'
-            )
-            this.checkScheduleConflict(error.response.data.errorArray)
-          }
-        )
+        temparray[0].moldGreenRange = moldarray[1]
+        temparray[0].moldYellowRange = moldarray[2]
+        this.editsubmitcallAPI(temparray)
       }
+    },
+    //編輯送出api
+    editsubmitcallAPI(data) {
+      let access_token_val = this.$cookies.get('access_token')
+      ScheduleOEEmultieditAPI.put(JSON.stringify(data), {
+        headers: {
+          access_token: access_token_val
+        }
+      }).then(
+        () => {
+          this.errormes = ''
+          this.modaledit = false
+          this.$layer.msg(this.$t('scuccess'))
+          this.getdata()
+        },
+        error => {
+          this.errorArray = error.response.data.errorArray
+        }
+      )
     },
 
     moldchange(moldId) {

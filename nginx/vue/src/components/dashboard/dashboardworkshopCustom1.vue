@@ -171,7 +171,7 @@
                 >-->
                 <mdb-card
                   class="cascading-admin-card"
-                  style="margin-right:5px;margin-left:5px;min-height:25vh; "
+                  style="margin-right:5px;margin-left:5px;min-height:260px; "
                   align="left"
                 >
                   <!-- 閃爍 blink " -->

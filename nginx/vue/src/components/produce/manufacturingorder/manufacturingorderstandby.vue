@@ -2579,6 +2579,7 @@ export default {
   background-color: chartreuse;
 }
 .ui.selection.dropdown {
+  min-height: 2.71428571em;
   border: 0px;
 }
 .input-group.test {

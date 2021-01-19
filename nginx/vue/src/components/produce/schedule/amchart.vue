@@ -267,6 +267,8 @@
         src="../../../assets/loading-1.gif"
       />
     </div>
+    <!-- 排程衝突 -->
+    <error-tab :errorArray="errorArray"> </error-tab>
   </div>
 </template>
 
@@ -276,6 +278,8 @@ import * as am4charts from '@amcharts/amcharts4/charts'
 import am4themes_animated from '@amcharts/amcharts4/themes/animated'
 import naturalCompare from 'string-natural-compare'
 import { gmachineSelectAPI } from '@/plugins/basicapis.js'
+import errorTableTab from '@/components/produce/schedule/scheduleConflictTable'
+
 import {
   ScheduleOEEplusmultieditAPI,
   ScheduleOEEplusMoldMachineAPI
@@ -286,10 +290,13 @@ import 'bootstrap/dist/css/bootstrap.css'
 am4core.useTheme(am4themes_animated)
 
 export default {
-  components: {},
+  components: {
+    'error-tab': errorTableTab
+  },
   data() {
     var scheduleobject = []
     return {
+      errorArray: [], //錯誤array
       tabType: 3,
       chartshowflag: false,
       chart: null,
@@ -2068,85 +2075,12 @@ export default {
             })
           },
           error => {
-            // this.errormes = error.response.data.response
-            // console.log(error)
-            this.checkScheduleConflict(error.response.data.errorArray)
+            this.errorArray = error.response.data.errorArray
           }
         )
       }
     },
-    checkScheduleConflict(errorArray) {
-      this.scheduleConflictArray = []
-      errorArray.forEach(item => {
-        let checkIndex = this.scheduleConflictArray.findIndex(obj => {
-          return obj.scheduleNumber == item.scheduleNumber
-        })
-        if (checkIndex == -1) {
-          if (item.mode == 1) {
-            //模具衝突
-            this.scheduleConflictArray.push({
-              scheduleNumber: item.scheduleNumber,
-              moldNumber: item.moldNumber,
-              machineNumber: item.machineNumber,
-              moldConflict: [],
-              machineConflict: []
-            })
-            item.concliftSchedules.forEach(sub => {
-              this.scheduleConflictArray[this.scheduleConflictArray.length - 1].moldConflict.push({
-                scheduleNumber: sub.scheduleSerial,
-                startTime: this.timeStampToStringFunc(sub.startTime, 'yyyy-mm-dd hh:mm'),
-                endTime: this.timeStampToStringFunc(sub.endTime, 'yyyy-mm-dd hh:mm')
-              })
-            })
-          } else if (item.mode == 2) {
-            //設備衝突
 
-            this.scheduleConflictArray.push({
-              scheduleNumber: item.scheduleNumber,
-              moldNumber: item.moldNumber,
-              machineNumber: item.machineNumber,
-              moldConflict: [],
-              machineConflict: []
-            })
-            item.concliftSchedules.forEach(sub => {
-              this.scheduleConflictArray[
-                this.scheduleConflictArray.length - 1
-              ].machineConflict.push({
-                scheduleNumber: sub.scheduleSerial,
-                startTime: this.timeStampToStringFunc(sub.startTime, 'yyyy-mm-dd hh:mm'),
-                endTime: this.timeStampToStringFunc(sub.endTime, 'yyyy-mm-dd hh:mm')
-              })
-            })
-          }
-        } else {
-          if (item.mode == 1) {
-            //模具衝突
-            item.concliftSchedules.forEach(sub => {
-              this.scheduleConflictArray[checkIndex].moldConflict.push({
-                scheduleNumber: sub.scheduleSerial,
-                startTime: this.timeStampToStringFunc(sub.startTime, 'yyyy-mm-dd hh:mm'),
-                endTime: this.timeStampToStringFunc(sub.endTime, 'yyyy-mm-dd hh:mm')
-              })
-            })
-          } else if (item.mode == 2) {
-            //模具衝突
-            item.concliftSchedules.forEach(sub => {
-              this.scheduleConflictArray[checkIndex].machineConflict.push({
-                scheduleNumber: sub.scheduleSerial,
-                startTime: this.timeStampToStringFunc(sub.startTime, 'yyyy-mm-dd hh:mm'),
-                endTime: this.timeStampToStringFunc(sub.endTime, 'yyyy-mm-dd hh:mm')
-              })
-            })
-          }
-        }
-      })
-      this.scheduleConflictArray.forEach(item => {
-        item.moldConflict.sort((a, b) => naturalCompare(a.scheduleNumber, b.scheduleNumber))
-        item.machineConflict.sort((a, b) => naturalCompare(a.scheduleNumber, b.scheduleNumber))
-      })
-      this.scheduleConflictArray.sort((a, b) => naturalCompare(a.scheduleNumber, b.scheduleNumber))
-      this.scheduleConflict = true
-    },
     gradationProcessing(svgns, linearGradient, color, start, end) {
       let stopStartTag = document.createElementNS(svgns, 'stop')
       let stopEndTag = document.createElementNS(svgns, 'stop')

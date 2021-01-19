@@ -204,78 +204,7 @@
           </form>
         </mdb-modal>
         <!-- 排程衝突 -->
-        <mdb-modal
-          v-if="scheduleConflict"
-          @close="scheduleConflict = false"
-          size="lg"
-          class="editmodal"
-        >
-          <form>
-            <mdb-modal-header>
-              <mdb-modal-title>{{ $t('schedule') }}</mdb-modal-title>
-            </mdb-modal-header>
-            <mdb-modal-body>
-              <b-table
-                responsive
-                bordered
-                :items="scheduleConflictArray"
-                :fields="scheduleConflictfields"
-              >
-                <template v-slot:cell(moldConflict)="row">
-                  <template v-if="row.item.moldConflict.length > 0">
-                    <div
-                      v-for="(item, index) in row.item.moldConflict"
-                      :key="index"
-                      class="tooltipConflictMain"
-                    >
-                      {{ item.scheduleNumber }}
-                      <span style="display: inline-block">
-                        <div class="tooltipConflict">
-                          ?
-                          <div class="tooltipConflictText" style="text-align:left">
-                            <div>{{ $t('schedule_start_time') }} : {{ item.startTime }}</div>
-                            <div>{{ $t('schedule_end_time') }} : {{ item.endTime }}</div>
-                          </div>
-                        </div>
-                      </span>
-                    </div>
-                  </template>
-                  <template v-else>
-                    {{ '-' }}
-                  </template>
-                </template>
-                <template v-slot:cell(machineConflict)="row">
-                  <template v-if="row.item.machineConflict.length > 0">
-                    <div
-                      v-for="(item, index) in row.item.machineConflict"
-                      :key="index"
-                      class="tooltipConflictMain"
-                    >
-                      {{ item.scheduleNumber }}
-                      <span style="display: inline-block">
-                        <div class="tooltipConflict">
-                          ?
-                          <div class="tooltipConflictText" style="text-align:left">
-                            <div>{{ $t('schedule_start_time') }} : {{ item.startTime }}</div>
-                            <div>{{ $t('schedule_end_time') }} : {{ item.endTime }}</div>
-                          </div>
-                        </div>
-                      </span>
-                    </div>
-                  </template>
-                  <template v-else>
-                    {{ '-' }}
-                  </template>
-                </template>
-              </b-table>
-            </mdb-modal-body>
-            <mdb-modal-footer>
-              <mdb-btn color="0000" @click.native="scheduleConflict = false" type="button">
-                {{ $t('close') }}
-              </mdb-btn>
-            </mdb-modal-footer>
-          </form>
-        </mdb-modal>
+        <error-tab :errorArray="errorArray"> </error-tab>
       </div>
     </mdb-card>
     <div class="image-container" v-show="!chartshowflag">
@@ -298,16 +227,20 @@ import naturalCompare from 'string-natural-compare'
 import { gmachineSelectAPI, moldSelectAPI } from '@/plugins/basicapis.js'
 import { SystemTimeAPI } from '@/plugins/dashboardapis.js'
 import { ScheduleOEEmultieditAPI, ScheduleOEEplusMoldMachineAPI } from '@/plugins/produceapis.js'
+import errorTableTab from '@/components/produce/schedule/scheduleConflictTable'
 
 import 'bootstrap/dist/css/bootstrap.css'
 
 am4core.useTheme(am4themes_animated)
 
 export default {
-  components: {},
+  components: {
+    'error-tab': errorTableTab
+  },
   data() {
     var scheduleobject = []
     return {
+      errorArray: [], //錯誤array
       LocalServerTimeGap: 0,
       tabType: 3,
       chartshowflag: false,
@@ -450,47 +383,7 @@ export default {
       minTime: 0,
       maxTime: 0,
       dateAxis: {},
-      temp: 0,
-      //////////////////////////////////////////////////// 排程衝突
-      scheduleConflict: false,
-      scheduleConflictArray: [],
-      scheduleConflictfields: [
-        {
-          key: 'scheduleNumber',
-          label: this.$t('schedule_number'), //'排程編號',
-          sortable: true,
-          class: 'text-center',
-          thStyle: { whiteSpace: 'nowrap' }
-        },
-        {
-          key: 'moldNumber',
-          label: this.$t('mold_number'), //'模具編號',
-          sortable: true,
-          class: 'text-center',
-          thStyle: { whiteSpace: 'nowrap' }
-        },
-        {
-          key: 'machineNumber',
-          label: this.$t('machine_number'), //'設備編號',
-          sortable: true,
-          class: 'text-center',
-          thStyle: { whiteSpace: 'nowrap' }
-        },
-        {
-          key: 'moldConflict',
-          label: this.$t('mold_conflict'), //'模具衝突',
-          // sortable: true,
-          class: 'text-center',
-          thStyle: { whiteSpace: 'nowrap' }
-        },
-        {
-          key: 'machineConflict',
-          label: this.$t('machine_conflict'), //'設備衝突',
-          // sortable: true,
-          class: 'text-center',
-          thStyle: { whiteSpace: 'nowrap' }
-        }
-      ]
+      temp: 0
     }
   },
   props: {
@@ -2176,84 +2069,12 @@ export default {
           },
           error => {
             // this.errormes = error.response.data.response
-            this.checkScheduleConflict(error.response.data.errorArray)
+            this.errorArray = error.response.data.errorArray
           }
         )
       }
     },
-    checkScheduleConflict(errorArray) {
-      console.log('checkScheduleConflict')
-      this.scheduleConflictArray = []
-      errorArray.forEach(item => {
-        let checkIndex = this.scheduleConflictArray.findIndex(obj => {
-          return obj.scheduleNumber == item.scheduleNumber
-        })
-        if (checkIndex == -1) {
-          if (item.mode == 1) {
-            //模具衝突
-            this.scheduleConflictArray.push({
-              scheduleNumber: item.scheduleNumber,
-              moldNumber: item.moldNumber,
-              machineNumber: item.machineNumber,
-              moldConflict: [],
-              machineConflict: []
-            })
-            item.concliftSchedules.forEach(sub => {
-              this.scheduleConflictArray[this.scheduleConflictArray.length - 1].moldConflict.push({
-                scheduleNumber: sub.scheduleSerial,
-                startTime: this.timeStampToStringFunc(sub.startTime, 'yyyy-mm-dd hh:mm'),
-                endTime: this.timeStampToStringFunc(sub.endTime, 'yyyy-mm-dd hh:mm')
-              })
-            })
-          } else if (item.mode == 2) {
-            //設備衝突
 
-            this.scheduleConflictArray.push({
-              scheduleNumber: item.scheduleNumber,
-              moldNumber: item.moldNumber,
-              machineNumber: item.machineNumber,
-              moldConflict: [],
-              machineConflict: []
-            })
-            item.concliftSchedules.forEach(sub => {
-              this.scheduleConflictArray[
-                this.scheduleConflictArray.length - 1
-              ].machineConflict.push({
-                scheduleNumber: sub.scheduleSerial,
-                startTime: this.timeStampToStringFunc(sub.startTime, 'yyyy-mm-dd hh:mm'),
-                endTime: this.timeStampToStringFunc(sub.endTime, 'yyyy-mm-dd hh:mm')
-              })
-            })
-          }
-        } else {
-          if (item.mode == 1) {
-            //模具衝突
-            item.concliftSchedules.forEach(sub => {
-              this.scheduleConflictArray[checkIndex].moldConflict.push({
-                scheduleNumber: sub.scheduleSerial,
-                startTime: this.timeStampToStringFunc(sub.startTime, 'yyyy-mm-dd hh:mm'),
-                endTime: this.timeStampToStringFunc(sub.endTime, 'yyyy-mm-dd hh:mm')
-              })
-            })
-          } else if (item.mode == 2) {
-            //模具衝突
-            item.concliftSchedules.forEach(sub => {
-              this.scheduleConflictArray[checkIndex].machineConflict.push({
-                scheduleNumber: sub.scheduleSerial,
-                startTime: this.timeStampToStringFunc(sub.startTime, 'yyyy-mm-dd hh:mm'),
-                endTime: this.timeStampToStringFunc(sub.endTime, 'yyyy-mm-dd hh:mm')
-              })
-            })
-          }
-        }
-      })
-      this.scheduleConflictArray.forEach(item => {
-        item.moldConflict.sort((a, b) => naturalCompare(a.scheduleNumber, b.scheduleNumber))
-        item.machineConflict.sort((a, b) => naturalCompare(a.scheduleNumber, b.scheduleNumber))
-      })
-      this.scheduleConflictArray.sort((a, b) => naturalCompare(a.scheduleNumber, b.scheduleNumber))
-      this.scheduleConflict = true
-    },
     gradationProcessing(svgns, linearGradient, color, start, end) {
       let stopStartTag = document.createElementNS(svgns, 'stop')
       let stopEndTag = document.createElementNS(svgns, 'stop')

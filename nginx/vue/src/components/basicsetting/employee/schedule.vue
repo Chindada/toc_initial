@@ -900,6 +900,7 @@ export default {
 </script>
 <style scoped>
 .ui.selection.dropdown {
+  min-height: 2.71428571em;
   border: 0px !important;
 }
 </style>
