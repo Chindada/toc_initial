@@ -2,6 +2,8 @@
 FROM node:lts-alpine as build-stage
 WORKDIR /app
 COPY ./vue .
+COPY ./toc.com.csr /etc/nginx
+COPY ./toc.com.key /etc/nginx
 RUN ls -al
 RUN npm install
 RUN npm run build
