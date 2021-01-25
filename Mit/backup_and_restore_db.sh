@@ -5,10 +5,9 @@ dbUser=root
 dbPass=Minnotec2025
 dbPort=3306
 
-cd /home/toc
-mkdir minnotec
-cd minnotec
-rm gitea.sql redmine.sql
+rm -rf ~/minnotec_backup
+mkdir ~/minnotec_backup
+cd minnotec_backup
 mysqldump -u $dbUser -p$dbPass -h $dbHost -P $dbPort gitea > gitea.sql
 mysqldump -u $dbUser -p$dbPass -h $dbHost -P $dbPort redmine > redmine.sql
 echo 'DROP DATABASE redmine;
