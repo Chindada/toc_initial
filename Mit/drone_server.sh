@@ -7,7 +7,7 @@ docker run --name drone \
   --network=dockervlan \
   --ip=192.168.10.236 \
   --restart always \
-  -v docker_data/drone:/data \
+  -v /docker_data/drone:/data \
   -e DRONE_GITEA_SERVER=http://192.168.10.8/ \
   -e DRONE_GITEA_CLIENT_ID=614223ea-564a-4ee8-b174-eb456c84453e \
   -e DRONE_GITEA_CLIENT_SECRET=-eelbfVUEo61-wFnJePi-2300W9DF3a4rpb5hstoySs= \
