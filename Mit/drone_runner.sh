@@ -4,7 +4,7 @@ docker stop runner
 docker system prune --volumes -f
 
 docker run -d --name runner \
-  --network tocvlan \
+  --network dockervlan \
   --ip=192.168.10.235 \
   --restart always \
   -v /var/run/docker.sock:/var/run/docker.sock \
