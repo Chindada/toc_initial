@@ -18,7 +18,11 @@ git clone http://github.com/Chindada/toc_initial.git
 cd toc_initial
 chmod -R 777 ./
 ```
-
+```sh
+flutter doctor
+flutter doctor --android-licenses
+flutter pub global activate devtools
+```
 ```sh
 docker rmi $(docker images -a -q)
 docker system prune --volumes -f
