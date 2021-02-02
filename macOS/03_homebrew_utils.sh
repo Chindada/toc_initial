@@ -35,11 +35,11 @@ brew install --cask android-sdk
 
 gsed -i '$ a export ANDROID_SDK_ROOT="/usr/local/share/android-sdk"' ~/.zshrc
 
-touch ~/.android/repositories.cfg
 sdkmanager --update
-sdkmanager --list
+touch ~/.android/repositories.cfg
+
 sdkmanager "build-tools;30.0.3"
 sdkmanager "platforms;android-30"
 sdkmanager "platform-tools"
 
-gem install cocoapods
+sudo gem install cocoapods
