@@ -31,6 +31,10 @@ gsed -i '$ a export GO111MODULE="on"' ~/.zshrc
 asdf plugin list
 asdf current
 
+flutter doctor
+flutter doctor --android-licenses
+flutter pub global activate devtools
+
 
 
 
