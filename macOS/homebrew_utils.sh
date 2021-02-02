@@ -43,5 +43,3 @@ sdkmanager "platforms;android-30"
 sdkmanager "platform-tools"
 
 gem install cocoapods
-
-
