@@ -1,9 +1,5 @@
 #!/bin/sh
 
-brew install mas
-
-mas signin maochindada@gmail.com
-
 mas install 1295203466
 mas install 1153157709
 mas install 836500024

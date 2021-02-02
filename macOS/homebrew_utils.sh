@@ -4,6 +4,7 @@ brew install coreutils
 brew install curl
 brew install git
 brew install gnu-sed
+brew install mas
 
 git config --global user.name "TimHsu@MBP"
 git config --global user.email "maochindada@gmail.com"
