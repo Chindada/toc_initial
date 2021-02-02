@@ -14,9 +14,6 @@ sudo xcode-select --install
 
 ```sh
 cd ~
-rm -rf setup
-mkdir setup
-cd setup
 git clone http://github.com/Chindada/toc_initial.git
 cd toc_initial
 chmod -R 777 ./
