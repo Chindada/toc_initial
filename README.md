@@ -9,6 +9,10 @@ Just Run
 What things you need to install the software and how to install them
 
 ```sh
+sudo xcode-select --install
+```
+
+```sh
 cd ~
 rm -rf setup
 mkdir setup
