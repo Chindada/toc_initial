@@ -35,8 +35,9 @@ brew install --cask android-sdk
 
 gsed -i '$ a export ANDROID_SDK_ROOT="/usr/local/share/android-sdk"' ~/.zshrc
 
-sdkmanager --update
+sdkmanager
 touch ~/.android/repositories.cfg
+sdkmanager --update
 
 sdkmanager "build-tools;30.0.3"
 sdkmanager "platforms;android-30"

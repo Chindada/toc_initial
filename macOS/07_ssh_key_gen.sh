@@ -5,7 +5,8 @@ eval "$(ssh-agent -s)"
 echo 'Host *
   AddKeysToAgent yes
   UseKeychain yes
-  IdentityFile ~/.ssh/id_ed25519' >> ~/.ssh/config
+  IdentityFile ~/.ssh/id_ed25519
+  StrictHostKeyChecking no' >> ~/.ssh/config
 ssh-add -K ~/.ssh/id_ed25519
 
 pbcopy < ~/.ssh/id_ed25519.pub
