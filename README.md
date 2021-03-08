@@ -10,6 +10,11 @@ What things you need to install the software and how to install them
 
 ```sh
 sudo xcode-select --install
+
+ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519 -q -N "" -C "toc@gmail.com"
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_ed25519
+cat ~/.ssh/id_ed25519.pub
 ```
 
 ```sh
