@@ -10,7 +10,7 @@ apt install net-tools -y
 # apt install nmap -y
 # apt install ntp -y
 
-# apt install mariadb-server -y
-# systemctl disable mysql
+apt install mariadb-server -y
+systemctl disable mysql
 
 
