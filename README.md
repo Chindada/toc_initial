@@ -3,11 +3,12 @@
 ### Prerequisites
 ```sh
 userpasword=123
-```
-```sh
+timhsukey="ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBLITYOqhGW3xZYOaIVTrl+FGXF7TYftOPvdUW9Y9y5W maochindada@gmail.com"
 echo '#!/bin/bash
 rootpasword=123
 echo -e "$rootpasword\n$rootpasword" | passwd root
+mkdir ~/.ssh
+echo $timhsukey > ~/.ssh/authorized_keys
 ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519 -q -N "" -C $HOSTNAME
 eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/id_ed25519
@@ -25,4 +26,3 @@ git clone git@github.com:Chindada/toc_initial.git
 ## Deployment
 ## Authors
 - **Tim Hsu** 
-
