@@ -9,4 +9,4 @@ docker run --name tocsql \
     -e MYSQL_ROOT_PASSWORD=asdf0000 \
     -e MYSQL_ROOT_HOST="%" \
     -e TZ="Asia/Taipei" \
-    -d mariadb:10.5.2
+    -d mariadb:10.5.9
