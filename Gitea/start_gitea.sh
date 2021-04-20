@@ -29,8 +29,8 @@ docker run --name gitea \
   -e DB_USER="root" \
   -e DB_PASSWD="asdf0000" \
   -e REQUIRE_SIGNIN_VIEW="true" \
-  -e USER_UID=1500 \
-  -e USER_GID=1500 \
+  -e USER_UID=0 \
+  -e USER_GID=0 \
   -v $HOME/gitea_data:/data \
   -v $HOME/.ssh/:/data/git/.ssh \
   -v /etc/localtime:/etc/localtime:ro \
