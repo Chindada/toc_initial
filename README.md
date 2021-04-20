@@ -18,7 +18,6 @@ cat ~/.ssh/id_ed25519.pub' > ./first_init.sh
 chmod 777 ./first_init.sh
 echo "$userpasword" | sudo -S ./first_init.sh
 rm -f ./first_init.sh
-ls
 ```
 ```sh
 git clone git@github.com:Chindada/toc_initial.git
