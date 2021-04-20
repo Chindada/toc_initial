@@ -16,6 +16,3 @@ echo \
 
 apt-get update
 apt-get install docker-ce docker-ce-cli containerd.io -y
-
-groupadd docker
-usermod -aG docker $USER
