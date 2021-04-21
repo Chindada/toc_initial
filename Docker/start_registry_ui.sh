@@ -13,3 +13,4 @@ docker run -d \
   -e REGISTRY_URL=http://registry:5000 \
   -e REGISTRY_TITLE="ToC Docker Registry" \
   joxit/docker-registry-ui:static
+  

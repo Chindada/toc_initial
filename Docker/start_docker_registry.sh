@@ -10,5 +10,5 @@ docker run -d \
   --name registry \
   -v /registry-data:/var/lib/registry \
   -e REGISTRY_STORAGE_DELETE_ENABLED=true \
-  -e /home/toc/drone/toc_initial/System/credentials.yml:/etc/docker/registry/config.yml \
+  -e $pwd/credentials.yml:/etc/docker/registry/config.yml \
   registry:2

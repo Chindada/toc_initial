@@ -15,3 +15,4 @@ docker run -d --name runner \
   -e DRONE_RUNNER_CAPACITY=2 \
   -e DRONE_RUNNER_NAME=runner \
   drone/drone-runner-docker:1
+  
