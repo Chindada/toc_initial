@@ -20,7 +20,7 @@ echo "$userpasword" | sudo -S ./first_init.sh
 rm -f ./first_init.sh
 ```
 ```sh
-sudo git clone git@github.com:Chindada/toc_initial.git /root/toc_initial
+git clone git@github.com:Chindada/toc_initial.git /root/toc_initial
 ```
 ## Deployment
 ## Authors
